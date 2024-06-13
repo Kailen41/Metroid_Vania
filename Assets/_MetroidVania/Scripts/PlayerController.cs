@@ -1,15 +1,18 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEditor.Experimental.GraphView.GraphView;
 
 public class PlayerController : MonoBehaviour
 {
     private Rigidbody2D _theRB;
+    private Animator _playerAnim;
 
     [Header("Player Movement")]
     public float moveSpeed;
-    public float jumpForce;
 
+    [Header("Player Jump")]
+    public float jumpForce;
     public Transform groundPoint;
     public LayerMask groundLayer;
 
@@ -19,6 +22,7 @@ public class PlayerController : MonoBehaviour
     private void Awake()
     {
         _theRB = GetComponent<Rigidbody2D>();
+        _playerAnim = GetComponentInChildren<Animator>();
     }
 
     void Start()
@@ -36,5 +40,8 @@ public class PlayerController : MonoBehaviour
         {
             _theRB.velocity = new Vector2(_theRB.velocity.x, jumpForce);
         }
+
+        _playerAnim.SetBool("IsGrounded", _isGrounded);
+        _playerAnim.SetFloat("Speed", Mathf.Abs(_theRB.velocity.x));
     }
 }
