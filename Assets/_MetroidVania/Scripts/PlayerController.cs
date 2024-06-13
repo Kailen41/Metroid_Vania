@@ -25,22 +25,38 @@ public class PlayerController : MonoBehaviour
         _playerAnim = GetComponentInChildren<Animator>();
     }
 
-    void Start()
+    void Update()
     {
-        
+        PlayerMovement();
+        PlayerJumping();
+        SetPlayerAnimation();
+
+        if (_theRB.velocity.x < 0)
+        {
+            transform.localScale = new Vector3(-1f, 1f, 1f);
+        }
+        else if (_theRB.velocity.x > 0)
+        {
+            transform.localScale = Vector3.one;
+        }
     }
 
-    void Update()
+
+    private void PlayerMovement()
     {
         float _xInput = Input.GetAxisRaw("Horizontal");
         _theRB.velocity = new Vector2(_xInput * moveSpeed, _theRB.velocity.y);
-
+    }
+    private void PlayerJumping()
+    {
         _isGrounded = Physics2D.OverlapCircle(groundPoint.position, _overlapRadius, groundLayer);
         if (Input.GetKeyDown(KeyCode.Space) && _isGrounded)
         {
             _theRB.velocity = new Vector2(_theRB.velocity.x, jumpForce);
         }
-
+    }
+    private void SetPlayerAnimation()
+    {
         _playerAnim.SetBool("IsGrounded", _isGrounded);
         _playerAnim.SetFloat("Speed", Mathf.Abs(_theRB.velocity.x));
     }
