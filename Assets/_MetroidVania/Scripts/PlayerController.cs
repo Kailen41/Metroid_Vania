@@ -19,6 +19,10 @@ public class PlayerController : MonoBehaviour
 
     private bool _isGrounded;
     private float _overlapRadius = 0.2f;
+
+    [Header("Bullet Control")]
+    [SerializeField] private BulletController _bullet;
+    [SerializeField] private Transform _shotFiredPosition;
     #endregion
 
     private void Awake()
@@ -33,6 +37,7 @@ public class PlayerController : MonoBehaviour
         PlayerJumping();
         SetPlayerAnimation();
         FlippingPlayerSpriteOnLocalScale();
+        SpawnShotWhenPlayerInputs();
     }
 
     private void PlayerMovement()
@@ -65,6 +70,14 @@ public class PlayerController : MonoBehaviour
         else if (_theRB.velocity.x > 0)
         {
             transform.localScale = Vector3.one;
+        }
+    }
+
+    private void SpawnShotWhenPlayerInputs()
+    {
+        if (Input.GetKeyDown(KeyCode.Mouse0))
+        {
+            Instantiate(_bullet, _shotFiredPosition.position, _shotFiredPosition.rotation).moveDirection = new Vector2(transform.localScale.x, 0.0f);
         }
     }
 }

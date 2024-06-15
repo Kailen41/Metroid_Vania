@@ -6,7 +6,7 @@ public class BulletController : MonoBehaviour
 {
     private Rigidbody2D _theBulletRB;
 
-    private float _bulletSpeed = 10;
+    private float _bulletSpeed = 12;
 
     public Vector2 moveDirection;
 
